@@ -60,8 +60,6 @@ export default function Page() {
   const [lekarnicky, setLekarnicky] = useState(0);
   const [narocnaOperace, setNarocnaOperace] = useState(false);
   const [cenaOperace, setCenaOperace] = useState('70000');
-  const [jmenoPacienta, setJmenoPacienta] = useState('');
-  const [poznamka, setPoznamka] = useState('');
 
   const toggleItem = (setter, value) => {
     setter((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
@@ -98,26 +96,22 @@ export default function Page() {
     setLekarnicky(0);
     setNarocnaOperace(false);
     setCenaOperace('70000');
-    setJmenoPacienta('');
-    setPoznamka('');
   };
 
   const copySummary = async () => {
     const lines = [
-      'LOS SANTOS EMS - VÝSLEDNÁ CENA',
-      jmenoPacienta ? `Pacient: ${jmenoPacienta}` : null,
+      'LOS SANTOS EMS - VYSLEDNA CENA',
       '',
       ...souhrn.items.map((item) => `- ${item.label}: ${formatPrice(item.price)}`),
       '',
       `CELKEM: ${formatPrice(souhrn.total)}`,
-      poznamka ? `Poznámka: ${poznamka}` : null,
-    ].filter(Boolean);
+    ];
 
     try {
       await navigator.clipboard.writeText(lines.join('\n'));
-      window.alert('Souhrn byl zkopírován.');
+      alert('Souhrn byl zkopírován.');
     } catch {
-      window.alert('Souhrn se nepodařilo zkopírovat.');
+      alert('Souhrn se nepodařilo zkopírovat.');
     }
   };
 
@@ -129,25 +123,6 @@ export default function Page() {
           <h1 className="hero__title">Rychlá kalkulačka ošetření</h1>
           <p className="hero__text">Mobilní web pro rychlé spočítání ceny během služby. Velká tlačítka, minimum klikání, okamžitý výsledek.</p>
         </header>
-
-        <Card>
-          <SectionTitle>Pacient</SectionTitle>
-          <div className="stack">
-            <input
-              value={jmenoPacienta}
-              onChange={(event) => setJmenoPacienta(event.target.value)}
-              placeholder="Jméno pacienta"
-              className="input"
-            />
-            <textarea
-              value={poznamka}
-              onChange={(event) => setPoznamka(event.target.value)}
-              placeholder="Poznámka"
-              rows={3}
-              className="input input--textarea"
-            />
-          </div>
-        </Card>
 
         <Card>
           <SectionTitle>Zásah a převoz</SectionTitle>
